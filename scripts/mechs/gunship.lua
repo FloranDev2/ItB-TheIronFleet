@@ -3,7 +3,8 @@ local mechPath = resourcePath .."img/mechs/"
 
 local scriptPath = mod_loader.mods[modApi.currentMod].scriptPath
 local mod = modApi:getCurrentMod()
-local imageOffset = modApi:getPaletteImageOffset(mod.id)
+--local imageOffset = modApi:getPaletteImageOffset(mod.id)
+local dieselPunk = modApi:getPaletteImageOffset("truelch_DieselPunk")
 
 local files = {
 	"gunship.png",
@@ -38,7 +39,7 @@ GunshipMech = Pawn:new{
 	Flying = true,
 	
 	Image = "gunship",
-	ImageOffset = imageOffset,
+	ImageOffset = dieselPunk, --imageOffset,
 	
 	SkillList = { "truelch_RotaryCannon", --[["debugBoard"]] },
 

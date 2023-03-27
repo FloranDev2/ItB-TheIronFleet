@@ -7,21 +7,22 @@ local scriptPath = mod.scriptPath
 local resourcePath = mod.resourcePath
 
 --Libs
---local mark = require(scriptPath.."/mark")
 local mark = require(scriptPath.."/mark/mark")
 --LOG("mark: " .. tostring(mark))
 
---new previewer. I couldn't make it work :(
+--new previewer (not needed?)
 --local previewer = require(scriptPath.."/libs/weaponPreview")
 --old previewer
-local previewer = require(scriptPath .."weaponPreview/api")
+--local previewer = require(scriptPath .."weaponPreview/api")
 --LOG("previewer: " .. tostring(previewer))
 
 --------------------------------------------------- UTILITY / LOCAL FUNCTIONS ---------------------------------------------------
 
+--[[
 local function IsTipImage()
 	return Board:GetSize() == Point(6,6)
 end
+]]
 
 local function isGame()
 	return true
@@ -47,7 +48,7 @@ truelch_Musket = TankDefault:new{
 	Description = "Fires a metal slug fitted with a radio transmitter, marking the target. Deals 1 additional damage against marked targets.",
 	--Shop
 	Class = "Science",
-	PowerCost = 0, --AE version
+	PowerCost = 0,
 	Rarity = 3,
 	--Art
 	Icon = "weapons/musket.png",
@@ -59,8 +60,6 @@ truelch_Musket = TankDefault:new{
 	UpgradeCost = { 1 },
 	--Limited range projectile
 	ZoneTargeting = ZONE_DIR,
-	--tif_shot_metal_slug
-	--"effects/shot_phaseshot"
 	ProjectileArt = "effects/tif_shot_metal_slug",
 	--Gameplay
 	Damage = 1,
@@ -98,7 +97,7 @@ function truelch_Musket:GetTargetArea(point)
 		end
 	end
 
-	if IsTipImage() then
+	if Board:IsTipImage() then
 	    for _, point in pairs(self.TipMarkedPoints) do
 	    	Board:AddAnimation(point, "truelch_tip_mark_medium", 2)
     	end
@@ -148,7 +147,7 @@ function truelch_Musket:GetSkillEffect(p1, p2)
 	local spaceDamage = SpaceDamage(target, damage)
 
 	--Show mark (only tip image)
-	if IsTipImage() then
+	if Board:IsTipImage() then
 		spaceDamage.sImageMark = "combat/icons/truelch_mark_weapon_mark.png"
 
 		--fake mark icon

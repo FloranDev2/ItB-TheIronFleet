@@ -1,5 +1,20 @@
-local mod = modApi:getCurrentMod()
+modApi:addPalette({
+		ID = "truelch_DieselPunk",
+		Name = "Diesel Punk",
+		Image = "img/units/player/gunship_ns.png",
+		PlateHighlight = { 220, 250, 200 },	--lights
+		PlateLight     = { 128, 100,  97 },	--main highlight
+		PlateMid       = {  81,  54,  47 },	--main light
+		PlateDark      = {  40,  25,  25 },	--main mid
+		PlateOutline   = {  38,  31,  35 },	--main dark
+		PlateShadow    = {  34,  38,  37 },	--metal dark
+		BodyColor      = {  47,  51,  48 },	--metal mid
+		BodyHighlight  = { 119, 141, 145 },	--metal light
+})
+modApi:getPaletteImageOffset("truelch_DieselPunk")
 
+--[[
+local mod = modApi:getCurrentMod()
 local palette = {
 	id = mod.id,
 	name = "Diesel Punk", 
@@ -15,8 +30,8 @@ local palette = {
 		metal_dark =     {  34,  38,  37 }, --PlateShadow
 	},
 }
-
 modApi:addPalette(palette)
+]]
 
 --Lighter Diesel Punk
 --[[

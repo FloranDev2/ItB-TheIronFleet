@@ -1,10 +1,14 @@
 local mod = {
 	id = "truelch_TheIronFleet",
 	name = "Iron Fleet",
+	icon = "img/mod_icon.png",
 	version = "0.2.0",
-	requirements = { "kf_ModUtils" },
-	modApiVersion = "2.7.1",
-	icon = "img/mod_icon.png"
+	modApiVersion = "2.9.1",
+	gameVersion = "1.2.88",
+    dependencies = {
+        modApiExt = "1.17",
+		memedit = "1.0.1",
+    }	
 }
 
 function mod:init()
@@ -15,19 +19,7 @@ function mod:init()
 	require(self.scriptPath .. "mark/mark")
 
 	--Achievements
-	require(self.scriptPath .. "achievements")
-
-    --modApiExt
-	if modApiExt then
-	    -- modApiExt already defined. This means that the user has the complete
-	    -- ModUtils package installed. Use that instead of loading our own one.
-	    truelch_tif_ModApiExt = modApiExt
-	else
-	    -- modApiExt was not found. Load our inbuilt version
-	    local extDir = self.scriptPath .. "modApiExt/"
-	    truelch_tif_ModApiExt = require(extDir .. "modApiExt")
-	    truelch_tif_ModApiExt:init(extDir)
-	end
+	--require(self.scriptPath .. "achievements")
 
 	--Mechs
 	require(self.scriptPath .. "mechs/gunship")
@@ -70,11 +62,8 @@ function mod:init()
 end
 
 function mod:load(options, version)
-	--modApiExt
-	truelch_tif_ModApiExt:load(self, options, version)
-
 	--Weapon preview
-	require(self.scriptPath .."weaponPreview/api"):load() --old lib
+	--require(self.scriptPath .."weaponPreview/api"):load() --old lib
 
 	modApi:addSquad(	
 		{

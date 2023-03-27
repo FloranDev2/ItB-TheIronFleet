@@ -1,26 +1,21 @@
 --------------------------------------------------- IMPORTATIONS ---------------------------------------------------
-
 local mod = mod_loader.mods[modApi.currentMod]
-
 local scriptPath = mod.scriptPath
-
---local mark = require(scriptPath.."/mark")
 local mark = require(scriptPath.."/mark/mark")
---LOG("mark: " .. tostring(mark))
 
---new previewer. I couldn't make it work :(
+--new previewer (not needed?)
 --local previewer = require(scriptPath.."/libs/weaponPreview")
---LOG("previewer: " .. tostring(previewer))
-
+--LOG("TRUELCH - previewer: " .. tostring(previewer))
 --old previewer
-local previewer = require(scriptPath .."weaponPreview/api")
-
+--local previewer = require(scriptPath .."weaponPreview/api")
 
 --------------------------------------------------- UTILITY / LOCAL FUNCTIONS ---------------------------------------------------
 
+--[[
 local function IsTipImage()
 	return Board:GetSize() == Point(6,6)
 end
+]]
 
 local function isGame()
 	return true
@@ -52,7 +47,7 @@ truelch_FighterStrafe = Skill:new{
 	Description = "Marks and pushes a target.\nAlso strikes other marked enemies, dealing 1 damage and pushing in the same direction.",
 	--Shop
 	Class = "Ranged",
-	PowerCost = 0, --AE version
+	PowerCost = 0,
 	Rarity = 3,
 	--AE
 	TwoClick = true,
@@ -115,7 +110,7 @@ function truelch_FighterStrafe:GetTargetArea(point)
 	end
 
 	--Show marked enemies
-	if IsTipImage() then
+	if Board:IsTipImage() then
 	    for _, point in pairs(self.TipMarkedPoints) do
 	    	Board:AddAnimation(point, "truelch_tip_mark_long", 2)
     	end
@@ -201,7 +196,7 @@ function truelch_FighterStrafe:GetFinalEffect(p1, p2, p3)
 		end
 	end
 
-	if IsTipImage() then
+	if Board:IsTipImage() then
 	    for _, point in pairs(self.TipMarkedPoints) do
 	    	self:Attack(ret, point, direction, false)
     	end

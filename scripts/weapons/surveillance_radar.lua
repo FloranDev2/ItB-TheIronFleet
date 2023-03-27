@@ -13,10 +13,7 @@ local mark = require(scriptPath.."/mark/mark")
 --LOG("previewer: " .. tostring(previewer))
 
 --old previewer
-local previewer = require(scriptPath .."weaponPreview/api")
-
---Maybe useful for the hook / event I'll use for the passive
-local truelch_tif_ModApiExt = require(scriptPath .. "modApiExt/modApiExt")
+--local previewer = require(scriptPath .."weaponPreview/api")
 
 --------------------------------------------------- CONSTANTS ---------------------------------------------------
 
@@ -30,10 +27,6 @@ local MARK_BONUS_DMG_2 = 2 --1 --truelch_SurveillanceRadar_B, truelch_Surveillan
 
 --------------------------------------------------- UTILITY / LOCAL FUNCTIONS ---------------------------------------------------
 
-local function IsTipImage()
-	local isTipImage = (Board:GetSize() == Point(6,6))
-	return Board:GetSize() == Point(6,6)
-end
 
 local function isGame()
 	return true
@@ -128,7 +121,7 @@ function truelch_SurveillanceRadar:GetTargetArea(point)
 	end
 
 	--Show marked enemies
-	if IsTipImage() then
+	if Board:IsTipImage() then
 	    for _, point in pairs(self.TipMarkedPoints) do
 	    	if self.TipIndex == 1 then --hopefully that'll make it!
 	    		Board:AddAnimation(point, "truelch_tip_mark_medium", 2)
@@ -269,7 +262,7 @@ end
 function truelch_SurveillanceRadar:GetSkillEffect(p1, p2)
 	local ret = SkillEffect()
 
-	if IsTipImage() then
+	if Board:IsTipImage() then
 		self:TipImageEffect(ret, p1, p2)
 	else
 		self:NormalEffect(ret, p1, p2)
@@ -397,7 +390,7 @@ local function IsValidForBonusDamage(pawn, spaceDamage)
 	--LOG("IsValidForBonusDamage?")
 
 	--IS NOT TIP IMAGE (!!)
-	if IsTipImage() then
+	if Board:IsTipImage() then
 		--LOG("IsTipImage() -> return false")
 		return false
 	end
@@ -467,18 +460,11 @@ local function computeMarkBonusDamage(pawn, skillEffect)
 	end
 end
 
---[[
-Doesn't work with two clicks weapons (for the second click).
-Also doesn't work with Judo Mech attack for some reason.
-]]
 local HOOK_onSkillBuild = function(mission, pawn, weaponId, p1, p2, skillEffect)
-	--LOG("HOOK_onSkillBuild(pawn: " .. pawn:GetType() .. ", weaponId: " .. weaponId .. ", p1: " .. p1:GetString() .. ", p2: " .. p2:GetString() .. ")")
 	computeMarkBonusDamage(pawn, skillEffect)
 end
 
-local HOOK_onSkillBuildSecondClick = function(mission, pawn, weaponId, p1, p2, p3, skillEffect)
-	--LOG("HOOK_onSkillBuildSecondClick(pawn: " .. pawn:GetType() .. ", weaponId: " .. weaponId .. ", p1: " .. p1:GetString() .. ", p2: " .. p2:GetString() .. ", p3: " .. p3:GetString().. ")")
-	--Board:AddAlert(p3, "SECOND CLICK HOOK!")
+local HOOK_onFinalEffectBuildHook = function(mission, pawn, weaponId, p1, p2, p3, skillEffect)
 	computeMarkBonusDamage(pawn, skillEffect)
 end
 
@@ -486,8 +472,9 @@ end
 ---------------------------------------- Hooks / Events subscription ----------------------------------------
 
 local function EVENT_onModsLoaded()
-	truelch_tif_ModApiExt:addSkillBuildHook(HOOK_onSkillBuild)
-	truelch_tif_ModApiExt:addSkillBuildSecondClickHook(HOOK_onSkillBuildSecondClick)
+	modapiext:addSkillBuildHook(HOOK_onSkillBuild)
+	--modapiext:addSkillBuildSecondClickHook(HOOK_onSkillBuildSecondClick) --that was my version
+	modapiext:addFinalEffectBuildHook(HOOK_onFinalEffectBuildHook)
 end
 
 modApi.events.onModsLoaded:subscribe(EVENT_onModsLoaded)

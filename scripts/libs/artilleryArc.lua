@@ -1,5 +1,5 @@
 
-local VERSION = "1.1.2"
+local VERSION = "1.2.0"
 ---------------------------------------------------
 -- Artillery Arc - code library
 --
@@ -26,11 +26,14 @@ local VERSION = "1.1.2"
 --
 -- requires
 --    modApiExt
---    eventifyModApiExtEvents
+--    weaponArmed
 --
 ---------------------------------------------------
 
-local weaponArmed = LApi.library:fetch("weaponArmed")
+local mod = modApi:getCurrentMod()
+local path = GetParentPath(...)
+local weaponArmed = require(path.."weaponArmed")
+local modApiExt = modapiext or require(mod.scriptPath.."modApiExt/modApiExt")
 local DEFAULT_HEIGHT = 18
 
 local function onModsInitialized()
@@ -56,7 +59,7 @@ local isNewestVersion = false
 if isNewestVersion then
 	ArtilleryArc = ArtilleryArc or {}
 	ArtilleryArc.version = VERSION
-	
+
 	local function resetArtilleryHeight()
 		Values.y_velocity = DEFAULT_HEIGHT
 	end
@@ -129,7 +132,7 @@ if isNewestVersion then
 	function ArtilleryArc:finalizeInit()
 		weaponArmed.events.onWeaponArmed:subscribe(self.onWeaponArmed)
 		weaponArmed.events.onWeaponUnarmed:subscribe(self.onWeaponUnarmed)
-		modApi.events.onSkillEnd:subscribe(self.onSkillEnd)
+		modApiExt.events.onSkillEnd:subscribe(self.onSkillEnd)
 		modApi.events.onTipImageShown:subscribe(self.onTipImageShown)
 		modApi.events.onTipImageHidden:subscribe(self.onTipImageHidden)
 		modApi.events.onMissionUpdate:subscribe(self.onMissionUpdate)

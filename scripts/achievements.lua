@@ -9,7 +9,6 @@ local resourcePath = mod.resourcePath
 local modApiExt = require(scriptPath .. "modApiExt/modApiExt")
 
 --Libs
---local mark = require(scriptPath.."/mark")
 local mark = require(scriptPath.."/mark/mark")
 
 --Goals

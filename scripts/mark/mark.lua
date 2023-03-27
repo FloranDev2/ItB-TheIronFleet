@@ -6,7 +6,6 @@ By: Truelch, imagined by tob260 for the Iron Fleet.
 
 Dependencies:
 - weaponPreview (old lib)
-- modApiExt: modified version (1.14.256)
 ]]
 
 --------------------------------------------------- MARK ---------------------------------------------------
@@ -26,13 +25,10 @@ local resourcePath = mod.resourcePath
 local markScriptPath = scriptPath .. "/mark/scripts/"
 local markResourcePath = scriptPath .. "/mark/"
 
---Libs
-local modApiExt = require(scriptPath.."/modApiExt/modApiExt")
---local modApiExt = require(markScriptPath.."/libs/modApiExt/modApiExt") --it requires to have duplicate modApiExt folders.
-
---old previewer
-local previewer = require(scriptPath.."/weaponPreview/api")
+--old previewer (unused?)
+--local previewer = require(scriptPath.."/weaponPreview/api")
 --local previewer = require(markScriptPath.."/libs/weaponPreview/api") --same issue as above
+
 
 --I can do that before importing the images, cool!
 require(markScriptPath .. "/animations")
@@ -67,9 +63,11 @@ modApi:appendAsset("img/combat/icons/truelch_mark_board_c.png", markResourcePath
 
 --------------------------------------------------- UTILITY / LOCAL FUNCTIONS ---------------------------------------------------
 
+--[[
 local function IsTipImage()
 	return Board:GetSize() == Point(6, 6)
 end
+]]
 
 local function isGame()
 	return true
@@ -109,7 +107,7 @@ function mark:canMark(p)
 	--TODO: add assert
 
 	--Additional safety
-	if IsTipImage() then
+	if Board:IsTipImage() then
 		return false
 	end
 

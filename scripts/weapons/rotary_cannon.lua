@@ -5,30 +5,18 @@ local mod = mod_loader.mods[modApi.currentMod]
 local scriptPath = mod.scriptPath
 local resourcePath = mod.resourcePath
 
---local mark = require(scriptPath.."/mark")
 local mark = require(scriptPath.."/mark/mark")
 --LOG("mark: " .. tostring(mark))
 
---local LApi = require(scriptPath .. "LApi/LApi") --Do I really need LApi?
---LOG("[rotary_cannon] LApi: " .. tostring(LApi))
-
---local modApiExt = LApi.library:fetch("modApiExt/modApiExt", nil, "ITB-ModUtils") --Oh it worked apparently
-local modApiExt = require(scriptPath .. "modApiExt/modApiExt")
---LOG("[rotary_cannon] modApiExt: " .. tostring(modApiExt))
-
---new previewer. I couldn't make it work :(
+--new previewer (not needed)
 --local previewer = require(scriptPath.."/libs/weaponPreview")
---LOG("previewer: " .. tostring(previewer))
+--LOG("TRUELCH - previewer: " .. tostring(previewer))
 
 --old previewer
-local previewer = require(scriptPath .."weaponPreview/api")
+--local previewer = require(scriptPath .."weaponPreview/api")
 
 
 --------------------------------------------------- GENERIC UTILITY ---------------------------------------------------
-
-local function IsTipImage()
-	return Board:GetSize() == Point(6, 6)
-end
 
 local function isGame()
 	return true
@@ -137,7 +125,7 @@ truelch_RotaryCannon = Skill:new{
 	Description = "Deals 2 damage on marked enemies at a range of 2.\nThen, do a strafe attack that marks enemies and deals one damage.\nThe path of the strafe is created by hovering the tiles you want to strike.",
 	--Shop
 	Class = "Brute",
-	PowerCost = 0, --AE version
+	PowerCost = 0,
 	Rarity = 3,
 	--Art
 	Icon = "weapons/rotary_cannon.png",
@@ -204,7 +192,7 @@ function truelch_RotaryCannon:GetTargetArea(point)
     end
 
 	--Show marked enemies
-	if IsTipImage() then
+	if Board:IsTipImage() then
 	    for _, point in pairs(self.TipMarkedPoints) do
 	    	Board:AddAnimation(point, "truelch_tip_mark_medium", 2)
     	end
@@ -260,7 +248,7 @@ function truelch_RotaryCannon:StrafeAttack(ret, start, dest, path)
     		damage.sSound = self.StrafeSound
 
 			--Show mark (only tip image)
-			if IsTipImage() then
+			if Board:IsTipImage() then
 				damage.sImageMark = "combat/icons/truelch_mark_weapon_mark.png"
 			end
 
@@ -270,11 +258,11 @@ function truelch_RotaryCannon:StrafeAttack(ret, start, dest, path)
 
     		--mark?
     		local pawn = Board:GetPawn(pathPoint)
-			if not IsTipImage() and self.StrafeApplyMark == true and mark:canMark(pathPoint) then				
+			if not Board:IsTipImage() and self.StrafeApplyMark == true and mark:canMark(pathPoint) then				
 				mark:markEnemy(ret, damage, pawn)
 			end
 
-			if IsTipImage() and self.StrafeApplyMark == true and pawn ~= nil then
+			if Board:IsTipImage() and self.StrafeApplyMark == true and pawn ~= nil then
 				local fakeMarkIcon = SpaceDamage(pathPoint, 0)
 				fakeMarkIcon.sAnimation = "truelch_tip_mark_short"
 				ret:AddDamage(fakeMarkIcon)
@@ -369,7 +357,7 @@ function truelch_RotaryCannon:GetSkillEffect(p1, p2)
 	--LOG("GetSkillEffect")
 	local ret = SkillEffect()
 
-	if IsTipImage() then
+	if Board:IsTipImage() then
 		self:TipImageEffect(ret, p1, p2)
 	else
 		self:NormalEffect(ret, p1, p2)

@@ -3,7 +3,8 @@ local mechPath = resourcePath .."img/mechs/"
 
 local scriptPath = mod_loader.mods[modApi.currentMod].scriptPath
 local mod = modApi:getCurrentMod()
-local imageOffset = modApi:getPaletteImageOffset(mod.id)
+--local imageOffset = modApi:getPaletteImageOffset(mod.id)
+local dieselPunk = modApi:getPaletteImageOffset("truelch_DieselPunk")
 
 local files = {
 	"airship.png",
@@ -43,7 +44,7 @@ AirshipMech = Pawn:new{
 	LargeShield = true, --I want to test that!
 
 	Image = "airship",	
-	ImageOffset = imageOffset,
+	ImageOffset = dieselPunk, --imageOffset,
 	
 	SkillList = { "truelch_FighterStrafe" },
 
