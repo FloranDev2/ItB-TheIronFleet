@@ -1,4 +1,5 @@
-# The Iron Fleet (by Truelch and tob260)
+# The Iron Fleet (v1.0.0)
+by Truelch and tob260
 
 ## Table of Contents
 1. [Description]
