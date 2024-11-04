@@ -145,9 +145,11 @@ function truelch_FighterStrafe:Attack(ret, p2, dir, isMainTarget)
 		end
 
 		--Custom tip image! Note: the enemy is pushed!
-		local fakeMarkIcon = SpaceDamage(p2 + DIR_VECTORS[dir], 0)
-		fakeMarkIcon.sAnimation = "truelch_tip_mark_short"
-		ret:AddDamage(fakeMarkIcon)
+		if Board:IsTipImage() then
+			local fakeMarkIcon = SpaceDamage(p2 + DIR_VECTORS[dir], 0)
+			fakeMarkIcon.sAnimation = "truelch_tip_mark_short"
+			ret:AddDamage(fakeMarkIcon)
+		end
 	end
 
 	spaceDamage.iDamage = damage

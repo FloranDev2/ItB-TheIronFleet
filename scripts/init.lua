@@ -3,11 +3,11 @@ local mod = {
 	name = "Iron Fleet",
 	icon = "img/mod_icon.png",
 	version = "0.2.0",
-	modApiVersion = "2.9.1",
-	gameVersion = "1.2.88",
-    dependencies = {
-        modApiExt = "1.17",
-		memedit = "1.0.1",
+	modApiVersion = "2.9.2",
+	--gameVersion = "1.2.88",
+    dependencies = {    	
+		memedit = "1.0.4",
+        modApiExt = "1.21",
     }	
 }
 
@@ -19,7 +19,7 @@ function mod:init()
 	require(self.scriptPath .. "mark/mark")
 
 	--Achievements
-	--require(self.scriptPath .. "achievements")
+	require(self.scriptPath .. "achievements")
 
 	--Mechs
 	require(self.scriptPath .. "mechs/gunship")

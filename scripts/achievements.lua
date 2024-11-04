@@ -6,7 +6,7 @@ local scriptPath = mod.scriptPath
 local resourcePath = mod.resourcePath
 
 --modApiExt
-local modApiExt = require(scriptPath .. "modApiExt/modApiExt")
+--local modApiExt = require(scriptPath .. "modApiExt/modApiExt")
 
 --Libs
 local mark = require(scriptPath.."/mark/mark")
@@ -46,7 +46,7 @@ local achievements = {
 
 --Utility functions
 local function IsTipImage()
-	local isTipImage = (Board:GetSize() == Point(6,6))
+	--local isTipImage = (Board:GetSize() == Point(6,6))
 	return Board:GetSize() == Point(6,6)
 end
 
@@ -455,11 +455,11 @@ end
 
 local function EVENT_onModsLoaded()
     modApi:addNextTurnHook(HOOK_onNextTurnHook) --hiMark + aroundTheWorld
-    modApiExt:addSkillEndHook(HOOK_onSkillEnd) --aroundTheWorld + rideOfTheValkyries
-    modApiExt:addSkillTCEndHook(HOOK_onSkillTCEnd) --rideOfTheValkyries
-    modApiExt:addPawnUndoMoveHook(HOOK_onPawnUndoMove) --aroundTheWorld
+    modapiext:addSkillEndHook(HOOK_onSkillEnd) --aroundTheWorld + rideOfTheValkyries
+    modapiext:addSkillTCEndHook(HOOK_onSkillTCEnd) --rideOfTheValkyries
+    modapiext:addPawnUndoMoveHook(HOOK_onPawnUndoMove) --aroundTheWorld
     modApi:addMissionEndHook(HOOK_onMissionEnd) --aroundTheWorld
-	modApiExt:addPawnKilledHook(HOOK_onPawnKilled) --rideOfTheValkyries
+	modapiext:addPawnKilledHook(HOOK_onPawnKilled) --rideOfTheValkyries
 end
 
 modApi.events.onModsLoaded:subscribe(EVENT_onModsLoaded)
