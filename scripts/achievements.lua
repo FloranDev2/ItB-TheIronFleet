@@ -410,8 +410,11 @@ local HOOK_onSkillEnd = function(mission, pawn, weaponId, p1, p2)
     end
 end
 
-local HOOK_onSkillTCEnd = function(mission, pawn, weaponId, p1, p2, p3)
+--local HOOK_onSkillTCEnd = function(mission, pawn, weaponId, p1, p2, p3)
+local HOOK_onFinalEffectBuild = function(mission, pawn, weaponId, p1, p2, p3, skillEffect)
 	if not isSquad() or not isMission() then return end
+
+	--LOG("HOOK_onFinalEffectBuild")
 
 	local achievementData = achievementData()
 
@@ -441,7 +444,7 @@ local HOOK_onPawnKilled = function(mission, pawn)
 		--Increment kill count
 		--LOG("(before) kill count: " .. achievementData.killCount)
 		achievementData.killCount = achievementData.killCount + 1
-		--LOG("(after) kill count: " .. achievementData.killCount)
+		LOG("(after) kill count: " .. achievementData.killCount)
 
 		--Check kill count
 		if achievementData.killCount >= VALKYRIES_GOAL then
@@ -456,7 +459,8 @@ end
 local function EVENT_onModsLoaded()
     modApi:addNextTurnHook(HOOK_onNextTurnHook) --hiMark + aroundTheWorld
     modapiext:addSkillEndHook(HOOK_onSkillEnd) --aroundTheWorld + rideOfTheValkyries
-    modapiext:addSkillTCEndHook(HOOK_onSkillTCEnd) --rideOfTheValkyries
+    --modapiext:addSkillTCEndHook(HOOK_onSkillTCEnd) --rideOfTheValkyries
+    modapiext:addFinalEffectBuildHook(HOOK_onFinalEffectBuild)
     modapiext:addPawnUndoMoveHook(HOOK_onPawnUndoMove) --aroundTheWorld
     modApi:addMissionEndHook(HOOK_onMissionEnd) --aroundTheWorld
 	modapiext:addPawnKilledHook(HOOK_onPawnKilled) --rideOfTheValkyries
