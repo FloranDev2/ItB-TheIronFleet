@@ -1,4 +1,4 @@
-# The Iron Fleet (v1.0.0)
+# The Iron Fleet (v1.0.1)
 by Truelch and tob260
 
 ## Table of Contents
@@ -29,6 +29,9 @@ Thanks for Lemonymous and NamesAreHard for coding support!
 Also, thanks for TheGreenDigi for sharing your ideas. We haven't forgot your propositions, in fact, we are planning to do a tune-down version that may include your ideas. (at least marks that disappear at some point)
 
 ## Changelog
+
+### 1.0.1
+- Fixed TwoClick hook
 
 ### 1.0.0
 - Release!
