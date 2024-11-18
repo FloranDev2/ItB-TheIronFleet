@@ -1,19 +1,8 @@
 --------------------------------------------------- IMPORTATIONS ---------------------------------------------------
 
 local mod = mod_loader.mods[modApi.currentMod]
-
 local scriptPath = mod.scriptPath
-
---local mark = require(scriptPath.."/mark")
 local mark = require(scriptPath.."/mark/mark")
---LOG("mark: " .. tostring(mark))
-
---new previewer. I couldn't make it work :(
---local previewer = require(scriptPath.."/libs/weaponPreview")
---LOG("previewer: " .. tostring(previewer))
-
---old previewer
---local previewer = require(scriptPath .."weaponPreview/api")
 
 --------------------------------------------------- CONSTANTS ---------------------------------------------------
 
@@ -138,7 +127,6 @@ end
 
 --Sweep effect
 
---function truelch_SurveillanceRadar:SweepEffect(ret, p1)
 local function SweepEffect(ret, p1, sweepAnim, sweepSound)	
 	local dam = SpaceDamage(p1, 0)
 	dam.sAnimation = sweepAnim
@@ -188,7 +176,6 @@ end
 
 --Tip image effect
 
---function truelch_SurveillanceRadar:TipFakeFighterStrafe(ret, start)
 local function TipFakeFighterStrafe(ret, start, tipStrafeDamage, tipStrafeDir)
 	ret:AddAirstrike(start, "units/mission/bomber_1.png")
 	local dam = SpaceDamage(start, tipStrafeDamage)
@@ -200,8 +187,7 @@ local function TipFakeFighterStrafe(ret, start, tipStrafeDamage, tipStrafeDir)
 end
 
 
-function truelch_SurveillanceRadar:TipImageEffect(ret, p1, p2)
-	
+function truelch_SurveillanceRadar:TipImageEffect(ret, p1, p2)	
 	if self.TipIndex == 0 then
 		--Radar anim
 		SweepEffect(ret, p1, self.SweepAnim, self.SweepSound)
@@ -255,9 +241,6 @@ function truelch_SurveillanceRadar:TipImageEffect(ret, p1, p2)
 
 	return ret
 end
-
-
---GetSkillEffect
 
 function truelch_SurveillanceRadar:GetSkillEffect(p1, p2)
 	local ret = SkillEffect()
@@ -473,7 +456,6 @@ end
 
 local function EVENT_onModsLoaded()
 	modapiext:addSkillBuildHook(HOOK_onSkillBuild)
-	--modapiext:addSkillBuildSecondClickHook(HOOK_onSkillBuildSecondClick) --that was my version
 	modapiext:addFinalEffectBuildHook(HOOK_onFinalEffectBuildHook)
 end
 
