@@ -63,12 +63,6 @@ modApi:appendAsset("img/combat/icons/truelch_mark_board_c.png", markResourcePath
 
 --------------------------------------------------- UTILITY / LOCAL FUNCTIONS ---------------------------------------------------
 
---[[
-local function IsTipImage()
-	return Board:GetSize() == Point(6, 6)
-end
-]]
-
 local function isGame()
 	return true
 		and Game ~= nil
@@ -231,6 +225,9 @@ function mark:markEnemy(ret, spaceDamage, pawn)
 	ret:AddScript([[
 	    local pawn2 = Board:GetPawn(Point(]] .. pawnPos:GetString() .. [[))
 	    mark:addMark(ret, pawn2)
+	    if GAME.roninMark ~= nil then
+	    	GAME.roninMark[pawn2:GetId()] = pawn2:GetId()
+	    end
 	]])
 end
 
@@ -262,12 +259,19 @@ function mark:isPawnMarked(pawn)
         end
     end
 
+    --New: tosx Mecha Ronins Hunter mark
+    if GAME and
+    	not Board:IsTipImage() and
+    	GAME.roninMark ~= nil and
+    	GAME.roninMark[Board:GetPawn(pawn:GetSpace()):GetId()] then
+		--LOG("Iron fleet detected roninMark!")
+		return true
+	end
+
     return false
 end
 
-
 --------------------------------------------------- HOOKS / EVENTS ---------------------------------------------------
-
 local function HOOK_onMissionStart(mission)
     --LOG("HOOK_onMissionStart()")
     --Initialize mark list
@@ -281,7 +285,6 @@ local function HOOK_onMissionNextPhaseCreated(prevMission, nextMission)
     local missionData = missionData()
     missionData.markedPawnIds = {}
 end
-
 
 --------------------------------------------------- HOOKS / EVENTS SUBSCRIPTIONS ---------------------------------------------------
 
