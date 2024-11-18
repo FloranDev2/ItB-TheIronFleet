@@ -28,6 +28,20 @@ local markResourcePath = scriptPath .. "/mark/"
 --I can do that before importing the images, cool!
 require(markScriptPath .. "/animations")
 
+
+--------------------------------------------------- TOSX ---------------------------------------------------
+local tifToTosx
+local tosxToTif
+modApi.events.onModLoaded:subscribe(function(id)
+	if id ~= mod.id then return end
+	local options = mod_loader.currentModContent[id].options
+	tifToTosx = options["option_mark_tif_to_tosx"].enabled
+	tosxToTif = options["option_mark_tosx_to_tif"].enabled
+	--LOG("---------------- tifToTosx: " .. tostring(tifToTosx) .. ", type: " .. tostring(type(tifToTosx)))
+	--LOG("---------------- tosxToTif: " .. tostring(tosxToTif) .. ", type: " .. tostring(type(tosxToTif)))
+end)
+
+
 --------------------------------------------------- IMAGES ---------------------------------------------------
 
 
@@ -170,13 +184,12 @@ end
 
 
 function mark:removeMark(pawn)
-
 	if pawn == nil then
-		LOG("removeMark -> pawn is nil! -> return!")
+		--LOG("removeMark -> pawn is nil! -> return!")
 		return
 	end
 
-	LOG("removeMark(pawn: " .. pawn:GetType() .. ", id: " .. pawn:GetId() .. ")")
+	--LOG("removeMark(pawn: " .. pawn:GetType() .. ", id: " .. pawn:GetId() .. ")")
 
 	local missionData = missionData()
 	if missionData == nil then
@@ -185,7 +198,7 @@ function mark:removeMark(pawn)
 
 	--Shouldn't be useful anymore
 	if missionData.markedPawnIds == nil then
-		LOG("Initialized markedPawnIds (removeMark)")
+		--LOG("Initialized markedPawnIds (removeMark)")
 		missionData.markedPawnIds = {} --test
 	end
 
@@ -194,7 +207,7 @@ function mark:removeMark(pawn)
     for _, v in pairs(missionData.markedPawnIds) do
         if v == pawn:GetId() then
         	table.remove(missionData.markedPawnIds, index)
-        	LOG("Successfuly found the pawn whose mark must be removed!")
+        	--LOG("Successfuly found the pawn whose mark must be removed!")
         	break
         end
         index = index + 1
@@ -220,16 +233,22 @@ function mark:markEnemy(ret, spaceDamage, pawn)
 	ret:AddScript([[
 	    local pawn2 = Board:GetPawn(Point(]] .. pawnPos:GetString() .. [[))
 	    mark:addMark(ret, pawn2)
-	    if GAME.roninMark ~= nil then
-	    	GAME.roninMark[pawn2:GetId()] = pawn2:GetId()
-	    end
 	]])
+
+	--tosx compat
+	if tifToTosx then
+		ret:AddScript([[
+		    local pawn2 = Board:GetPawn(Point(]] .. pawnPos:GetString() .. [[))
+		    if GAME.roninMark ~= nil then
+		    	GAME.roninMark[pawn2:GetId()] = pawn2:GetId()
+		    end
+		]])
+	end
 end
 
 
 function mark:isPawnMarked(pawn)
 	--TODO: check if the pawn exists, is alive, etc.
-
 	if pawn == nil then
 		return
 	end
@@ -242,7 +261,7 @@ function mark:isPawnMarked(pawn)
 
 	--Shouldn't be useful anymore
 	if missionData.markedPawnIds == nil then
-		LOG("Initialized markedPawnIds (isPawnMarked)")
+		--LOG("Initialized markedPawnIds (isPawnMarked)")
 		missionData.markedPawnIds = {} --test
 	end
 
@@ -255,8 +274,9 @@ function mark:isPawnMarked(pawn)
     end
 
     --New: tosx Mecha Ronins Hunter mark
-    if GAME and
+    if tosxToTif and
     	not Board:IsTipImage() and
+    	GAME and
     	GAME.roninMark ~= nil and
     	GAME.roninMark[Board:GetPawn(pawn:GetSpace()):GetId()] then
 		--LOG("Iron fleet detected roninMark!")
