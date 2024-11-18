@@ -2,10 +2,10 @@ local mod = {
 	id = "truelch_TheIronFleet",
 	name = "Iron Fleet",
 	icon = "img/mod_icon.png",
-	version = "1.0.0",
+	version = "1.0.2",
 	modApiVersion = "2.9.2",
 	--gameVersion = "1.2.88",
-    dependencies = {    	
+    dependencies = {
 		memedit = "1.0.4",
         modApiExt = "1.21",
     }	
@@ -62,9 +62,6 @@ function mod:init()
 end
 
 function mod:load(options, version)
-	--Weapon preview
-	--require(self.scriptPath .."weaponPreview/api"):load() --old lib
-
 	modApi:addSquad(	
 		{
 			id = "truelch_TheIronFleet",
