@@ -25,11 +25,6 @@ local resourcePath = mod.resourcePath
 local markScriptPath = scriptPath .. "/mark/scripts/"
 local markResourcePath = scriptPath .. "/mark/"
 
---old previewer (unused?)
---local previewer = require(scriptPath.."/weaponPreview/api")
---local previewer = require(markScriptPath.."/libs/weaponPreview/api") --same issue as above
-
-
 --I can do that before importing the images, cool!
 require(markScriptPath .. "/animations")
 

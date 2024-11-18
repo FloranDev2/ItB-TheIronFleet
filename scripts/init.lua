@@ -45,6 +45,11 @@ function mod:init()
 	modApi:appendAsset("img/combat/icons/truelch_radar_sweep_2.png",self.resourcePath.."img/combat/icons/truelch_radar_sweep_2.png")
 		Location["combat/icons/truelch_radar_sweep_2.png"] = Point(-85, -41)
 
+	modApi:appendAsset("img/combat/icons/OLD_truelch_radar_sweep_1.png",self.resourcePath.."img/combat/icons/OLD_truelch_radar_sweep_1.png")
+		Location["combat/icons/OLD_truelch_radar_sweep_1.png"] = Point(-85, -41)
+	modApi:appendAsset("img/combat/icons/OLD_truelch_radar_sweep_2.png",self.resourcePath.."img/combat/icons/OLD_truelch_radar_sweep_2.png")
+		Location["combat/icons/OLD_truelch_radar_sweep_2.png"] = Point(-85, -41)
+
 	--Regular weapons
 	require(self.scriptPath .. "/weapons/fighter_strafe")
 	require(self.scriptPath .. "/weapons/rotary_cannon")
@@ -59,6 +64,29 @@ function mod:init()
 	modApi:addWeaponDrop("truelch_RotaryCannon")
 	modApi:addWeaponDrop("truelch_Musket")
 	modApi:addWeaponDrop("truelch_SurveillanceRadar")
+
+	--Mod options
+	modApi:addGenerationOption("option_mark_tif_to_tosx",
+		"Iron Fleet -> tosx",
+		"Should the Iron Fleet marking affect tosx' Mecha Ronin Hunter?",
+		{enabled = true}
+	)
+
+	modApi:addGenerationOption("option_mark_tosx_to_tif",
+		"tosx -> Iron Fleet",
+		"Should tosx' Mecha Ronin Hunter marking affect the Iron Fleet?",
+		{enabled = true}
+	)
+
+	modApi:addGenerationOption("option_sweepAnimVersion",
+		"Designator's radar sweep anim",
+		"Should it display a circular effect (old) or an effect that displays exactly the tiles that are affected?",
+		{
+			values = {1,2},
+			value = 1,
+			strings = { "New", "Old" }
+		}
+	)
 end
 
 function mod:load(options, version)

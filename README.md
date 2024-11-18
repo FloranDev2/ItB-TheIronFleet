@@ -30,6 +30,14 @@ Also, thanks for TheGreenDigi for sharing your ideas. We haven't forgot your pro
 
 ## Changelog
 
+### 1.0.2
+- Compatibility with tosx' Mecha Ronin's Hunter Mech's marking! (it works both ways: when Iron Fleet marks an enemy, it's in the ronin marking list and vice-versa)
+- Changed the sweep anim of the Designator's radar (from a circular anim to something that indicates clearly what tiles are affected)
+- Added mod options:
+  - Enable / disable Iron Fleet to also mark for tosx' Hunter pursuit drone
+  - Enable / disable tosx' Hunter pursuit drone to also mark for the Iron Fleet
+  - Choice between old and new sweep anim for the Designator Mech
+
 ### 1.0.1
 - Fixed TwoClick hook
 

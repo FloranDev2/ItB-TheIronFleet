@@ -16,6 +16,13 @@ local MARK_BONUS_DMG_2 = 2 --1 --truelch_SurveillanceRadar_B, truelch_Surveillan
 
 --------------------------------------------------- UTILITY / LOCAL FUNCTIONS ---------------------------------------------------
 
+local sweepAnimVersion --1: new / 2: old
+modApi.events.onModLoaded:subscribe(function(id)
+	if id ~= mod.id then return end
+	local options = mod_loader.currentModContent[id].options
+	sweepAnimVersion = options["option_sweepAnimVersion"].value
+	--LOG("----- sweepAnimVersion: " .. tostring(sweepAnimVersion) .. ", type: " .. tostring(type(sweepAnimVersion)))
+end)
 
 local function isGame()
 	return true
@@ -60,8 +67,8 @@ truelch_SurveillanceRadar = Skill:new{
 	--Art
 	Icon = "weapons/surveillance_radar.png",
 	SweepSound = "/weapons/airstrike",
-	--SweepAnim = "truelch_tip_mark",
-	SweepAnim = "truelch_sweep_1", --original
+	SweepAnim = "truelch_sweep_1",
+	SweepAnimOld = "truelch_sweep_old_1",
 	--Upgrades
 	Upgrades = 2,
 	UpgradeList = { "+1 Range", "+1 Mark Damage" },
@@ -140,6 +147,12 @@ end
 
 function truelch_SurveillanceRadar:NormalEffect(ret, p1, p2)
 	--Radar anim
+	local sweepAnim = self.SweepAnim
+	if sweepAnimVersion == 2 then
+		--LOG("[NORMAL] switch to old anim!")
+		sweepAnim = self.SweepAnimOld
+	end
+	--LOG("[NORMAL] ---------> sweepAnim: " .. sweepAnim)
 	SweepEffect(ret, p1, self.SweepAnim, self.SweepSound)
 
 	local size = self.Range
@@ -190,7 +203,13 @@ end
 function truelch_SurveillanceRadar:TipImageEffect(ret, p1, p2)	
 	if self.TipIndex == 0 then
 		--Radar anim
-		SweepEffect(ret, p1, self.SweepAnim, self.SweepSound)
+		local sweepAnim = self.SweepAnim
+		if sweepAnimVersion == 2 then
+			--LOG("[TIP] switch to old anim!")
+			sweepAnim = self.SweepAnimOld
+		end
+		--LOG("[TIP] ---------> sweepAnim: " .. sweepAnim)
+		SweepEffect(ret, p1, sweepAnim, self.SweepSound)
 
 		-- Show mark --->
 		local size = self.Range
@@ -259,6 +278,7 @@ truelch_SurveillanceRadar_A = truelch_SurveillanceRadar:new{
 	Range = 2,
 	--Effect
 	SweepAnim = "truelch_sweep_2",
+	SweepAnim = "truelch_sweep_old_2",
 	--TipImage
 	TipStrafeStarts = { Point(2, 2), Point(1, 2) },
 	TipImage = {
