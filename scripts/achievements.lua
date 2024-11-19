@@ -5,9 +5,6 @@ local mod = mod_loader.mods[modApi.currentMod]
 local scriptPath = mod.scriptPath
 local resourcePath = mod.resourcePath
 
---modApiExt
---local modApiExt = require(scriptPath .. "modApiExt/modApiExt")
-
 --Libs
 local mark = require(scriptPath.."/mark/mark")
 
@@ -22,7 +19,7 @@ local achievements = {
 	hiMark = modApi.achievements:add{
 		id = "hiMark",
 		name = "Oh, hi Mark!",
-		tip = "Have " .. tostring(HI_MARK_GOAL) .. " marked enemies at the end of your turn",
+		tip = "Have "..tostring(HI_MARK_GOAL).." marked enemies at the end of your turn",
 		img = mod.resourcePath.."img/achievements/hiMark.png",
 		squad = squad,
 	},
@@ -30,7 +27,7 @@ local achievements = {
 	rideOfTheValkyries = modApi.achievements:add{
 		id = "rideOfTheValkyries",
 		name = "Ride of the Valkyries",
-		tip = "Kill " .. tostring(VALKYRIES_GOAL) .. " enemies in a single attack",
+		tip = "Kill "..tostring(VALKYRIES_GOAL).." enemies in a single attack",
 		img = mod.resourcePath.."img/achievements/rideOfTheValkyries.png",
 		squad = squad,
 	},
@@ -45,11 +42,6 @@ local achievements = {
 }
 
 --Utility functions
-local function IsTipImage()
-	--local isTipImage = (Board:GetSize() == Point(6,6))
-	return Board:GetSize() == Point(6,6)
-end
-
 local function isGame()
 	return true
 		and Game ~= nil
@@ -75,7 +67,7 @@ local function isMissionBoard()
 	return true
 		and isMission()
 		and Board ~= nil
-		and IsTipImage() == false
+		and Board:IsTipImage() == false
 end
 
 local function isGameData()
@@ -151,10 +143,6 @@ local function achievementData()
 	return mission.truelch_TheIronFleet.achievementData
 end
 
-
-
-
-
 --Oh, hi Mark! (hiMark)
 --Have HI_MARK_GOAL (4) marked enemies at the end of your turn
 --Move that to mark lib?
@@ -176,7 +164,7 @@ achievements.hiMark.getTooltip = function(self)
 	local result = getTooltip(self)
 
 	if isMission() then
-		result = result .. "\n\nMarked enemies: " .. getAliveMarkedEnemyNumber() .. " / " .. HI_MARK_GOAL
+		result = result.."\n\nMarked enemies: "..getAliveMarkedEnemyNumber().." / "..HI_MARK_GOAL
 	end
 
 	return result
@@ -190,22 +178,16 @@ function completeHiMark()
 	end
 end
 
-
-
-
 --Ride of the Valkyries (rideOfTheValkyries)
 --Kill VALKYRIES_GOAL (5) enemies in a single attack
 --No tooltip for this one, the action is instant
 function completeRideOfTheValkyries()
-	--LOG("completeRideOfTheValkyries()")
-	--Board:AddAlert(Point(4, 4), "Ride of the Valkyries completed!")
+	LOG("completeRideOfTheValkyries()")
+	Board:AddAlert(Point(4, 4), "Ride of the Valkyries completed!")
 	if not achievements.rideOfTheValkyries:isComplete() then
 		achievements.rideOfTheValkyries:addProgress{ complete = true } --test for now
 	end
 end
-
-
-
 
 --Around the world (aroundTheWorld)
 --Reach every corner of the map with the Airship Mech before the end of a mission
@@ -225,10 +207,10 @@ achievements.aroundTheWorld.getTooltip = function(self)
 	local result = getTooltip(self)
 
 	if isMission() then
-		result = result .. "\n\nNorth: " .. getAroundTheWorldPointText(0) ..
-							 "\nWest: "  .. getAroundTheWorldPointText(1) ..
-							 "\nEast: "  .. getAroundTheWorldPointText(2) ..
-							 "\nSouth: " .. getAroundTheWorldPointText(3)
+		result = result.."\n\nNorth: "..getAroundTheWorldPointText(0)..
+						   "\nWest: "..getAroundTheWorldPointText(1)..
+						   "\nEast: "..getAroundTheWorldPointText(2)..
+						   "\nSouth: "..getAroundTheWorldPointText(3)
 	end
 
 	return result
@@ -247,7 +229,7 @@ end
 
 --I hope I didn't mess that up!
 --0: North, 1: West, 2: East, 3: South
-local NORTH = Point(0, 0) --North Point? That gives me some Ace Combat 4 vibes :D
+local NORTH = Point(0, 0)
 local WEST  = Point(0, 7)
 local EAST  = Point(7, 0)
 local SOUTH = Point(7, 7)
@@ -332,9 +314,6 @@ local function refreshPendingPoints()
 	end
 end
 
-
-
-
 --hiMark
 local function checkMarkedEnemiesNumber()
 	--LOG("checkMarkedEnemiesNumber()")
@@ -357,22 +336,15 @@ local function checkMarkedEnemiesNumber()
 	end
 end
 
-
-
-
 --aroundTheWorld
 --Hope this is called AFTER the last loadPendingToValidatedPoints() call
 local function checkValidatedPoints()
-	--LOG("checkValidatedPoints()")
 	local achievementData = achievementData()
-
 	local isOk = true
-
 	for i = 0, 3 do
 		--Fix for when the last turn has no Vek and their turn is skipped
 		isOk = isOk and (achievementData.validatedPoints[i] or achievementData.pendingPoints[i])
 	end
-
 	if isOk then
 		completeAroundTheWorld()
 	end
@@ -380,52 +352,44 @@ end
 
 ----------------------------------------------- HOOKS -----------------------------------------------
 --local lastTurn = "none" --to see if the enemy turn is skipped when there's no living enemy last turn
-
 local function HOOK_onNextTurnHook()
 	if not isSquad() or not isMission() then return end
-
-	local achievementData = achievementData()
-
+	achievementData().killCount = 0
     if Game:GetTeamTurn() == TEAM_PLAYER then
-    	--Refresh pending (maybe unnecessary)
     	refreshPendingPoints()
     elseif Game:GetTeamTurn() == TEAM_ENEMY then
-    	--Add pending to validated
     	loadPendingToValidatedPoints()
-
-    	--Check marked enemies number
 		checkMarkedEnemiesNumber()
     end
 end
 
 local HOOK_onSkillEnd = function(mission, pawn, weaponId, p1, p2)
 	if not isSquad() or not isMission() then return end
-
-	--That's what I thought, TC weapons don't trigger this hook.
-	--LOG("HOOK_onSkillEnd(weaponId: " .. weaponId .. ", p1: " .. p1:GetString() .. ", p2: " .. p2:GetString() .. ")")
-
-	--aroundTheWorld
-    if weaponId == "Move" and pawn:GetType() == "AirshipMech" then
-    	computeAddPoint(p2)
-    end
+	achievementData().killCount = 0
 end
 
---local HOOK_onSkillTCEnd = function(mission, pawn, weaponId, p1, p2, p3)
 local HOOK_onFinalEffectBuild = function(mission, pawn, weaponId, p1, p2, p3, skillEffect)
 	if not isSquad() or not isMission() then return end
-
-	--LOG("HOOK_onFinalEffectBuild")
-
-	local achievementData = achievementData()
-
-	--Reset kill count
-	achievementData.killCount = 0
+	achievementData().killCount = 0
 end
 
 local HOOK_onPawnUndoMove = function(mission, pawn, undonePosition)
 	if not isSquad() or not isMission() then return end
+
+	--LOG("HOOK_onPawnUndoMove")
+
 	if pawn:GetType() == "AirshipMech" then
 		computeRemovePoint(undonePosition)
+	end
+end
+
+--https://github.com/itb-community/ITB-ModUtils/blob/master/hooks.md#pawnpositionchangedhook
+local function HOOK_onPawnPositionChanged(mission, pawn, oldPosition)
+	--LOG(pawn:GetMechName() .. " position changed from " .. oldPosition:GetString() .. " to " .. pawn:GetSpace():GetString())
+	if pawn ~= nil and pawn:GetType() == "AirshipMech" then
+		--Board:Ping(oldPosition, GL_Color(0, 0, 0))
+		--Board:Ping(pawn:GetSpace(), GL_Color(255, 255, 255))
+		computeAddPoint(pawn:GetSpace())
 	end
 end
 
@@ -458,10 +422,10 @@ end
 
 local function EVENT_onModsLoaded()
     modApi:addNextTurnHook(HOOK_onNextTurnHook) --hiMark + aroundTheWorld
-    modapiext:addSkillEndHook(HOOK_onSkillEnd) --aroundTheWorld + rideOfTheValkyries
-    --modapiext:addSkillTCEndHook(HOOK_onSkillTCEnd) --rideOfTheValkyries
+    modapiext:addSkillEndHook(HOOK_onSkillEnd) --ideOfTheValkyries
     modapiext:addFinalEffectBuildHook(HOOK_onFinalEffectBuild)
     modapiext:addPawnUndoMoveHook(HOOK_onPawnUndoMove) --aroundTheWorld
+    modapiext:addPawnPositionChangedHook(HOOK_onPawnPositionChanged) --omg this is what I was looking for
     modApi:addMissionEndHook(HOOK_onMissionEnd) --aroundTheWorld
 	modapiext:addPawnKilledHook(HOOK_onPawnKilled) --rideOfTheValkyries
 end

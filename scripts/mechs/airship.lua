@@ -3,7 +3,6 @@ local mechPath = resourcePath .."img/mechs/"
 
 local scriptPath = mod_loader.mods[modApi.currentMod].scriptPath
 local mod = modApi:getCurrentMod()
---local imageOffset = modApi:getPaletteImageOffset(mod.id)
 local dieselPunk = modApi:getPaletteImageOffset("truelch_DieselPunk")
 
 local files = {
@@ -17,7 +16,7 @@ local files = {
 }
 
 for _, file in ipairs(files) do
-	modApi:appendAsset("img/units/player/" .. file, mechPath .. file)
+	modApi:appendAsset("img/units/player/"..file, mechPath..file)
 end
 
 local a = ANIMS
@@ -44,12 +43,10 @@ AirshipMech = Pawn:new{
 	LargeShield = true, --I want to test that!
 
 	Image = "airship",	
-	ImageOffset = dieselPunk, --imageOffset,
+	ImageOffset = dieselPunk,
 	
-	SkillList = { "truelch_FighterStrafe" },
+	SkillList = { "truelch_FighterStrafe", },
 
-	--"/mech/science/science_mech/"
-	--"/support/support_drone/"
 	SoundLocation = "/mech/flying/jet_mech/", 
 	ImpactMaterial = IMPACT_METAL,
 	

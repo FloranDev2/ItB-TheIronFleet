@@ -1,9 +1,8 @@
 local resourcePath = mod_loader.mods[modApi.currentMod].resourcePath
-local mechPath = resourcePath .."img/mechs/"
+local mechPath = resourcePath.."img/mechs/"
 
 local scriptPath = mod_loader.mods[modApi.currentMod].scriptPath
 local mod = modApi:getCurrentMod()
---local imageOffset = modApi:getPaletteImageOffset(mod.id)
 local dieselPunk = modApi:getPaletteImageOffset("truelch_DieselPunk")
 
 local files = {
@@ -17,7 +16,7 @@ local files = {
 }
 
 for _, file in ipairs(files) do
-	modApi:appendAsset("img/units/player/" .. file, mechPath .. file)
+	modApi:appendAsset("img/units/player/"..file, mechPath..file)
 end
 
 local a = ANIMS
@@ -39,12 +38,10 @@ GunshipMech = Pawn:new{
 	Flying = true,
 	
 	Image = "gunship",
-	ImageOffset = dieselPunk, --imageOffset,
+	ImageOffset = dieselPunk,
 	
-	SkillList = { "truelch_RotaryCannon", --[["debugBoard"]] },
+	SkillList = { "truelch_RotaryCannon", },
 
-	--"/mech/science/superman_mech/"
-	--"/mech/brute/needle_mech/"
 	SoundLocation = "/support/support_drone/",
 	ImpactMaterial = IMPACT_METAL,
 	

@@ -3,7 +3,6 @@ local mechPath = resourcePath .."img/mechs/"
 
 local scriptPath = mod_loader.mods[modApi.currentMod].scriptPath
 local mod = modApi:getCurrentMod()
---local imageOffset = modApi:getPaletteImageOffset(mod.id)
 local dieselPunk = modApi:getPaletteImageOffset("truelch_DieselPunk")
 
 local files = {
@@ -17,7 +16,7 @@ local files = {
 }
 
 for _, file in ipairs(files) do
-	modApi:appendAsset("img/units/player/" .. file, mechPath .. file)
+	modApi:appendAsset("img/units/player/"..file, mechPath..file)
 end
 
 local a = ANIMS
@@ -38,11 +37,10 @@ DesignatorMech = Pawn:new{
 	Massive = true,
 	
 	Image = "designator",
-	ImageOffset = dieselPunk, --imageOffset,
+	ImageOffset = dieselPunk,
 	
 	SkillList = { "truelch_Musket", "truelch_SurveillanceRadar" },
 
-	--"/mech/prime/punch_mech/"
 	SoundLocation = "/mech/prime/inferno_mech/",
 	ImpactMaterial = IMPACT_METAL,
 	
