@@ -30,6 +30,13 @@ Also, thanks for TheGreenDigi for sharing your ideas. We haven't forgot your pro
 
 ## Changelog
 
+### 1.0.3
+Various improvements on the mark visuals:
+- New icon (thx tosx!)
+- Mark anim is half transparent to make the unit underneath more visible
+- Fixed sweep anim that was always the old anim
+- Gunship's weapon won't show artillery arc (AoE, which made confusing visuals with the leap move) and will show mark on the path
+
 ### 1.0.2
 - Compatibility with tosx' Mecha Ronin's Hunter Mech's marking! (it works both ways: when Iron Fleet marks an enemy, it's in the ronin marking list and vice-versa)
 - Changed the sweep anim of the Designator's radar (from a circular anim to something that indicates clearly what tiles are affected)
