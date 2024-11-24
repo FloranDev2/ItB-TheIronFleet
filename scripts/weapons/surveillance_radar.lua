@@ -165,7 +165,6 @@ function truelch_SurveillanceRadar:NormalEffect(ret, p1, p2)
 	for i = 0, ((size*2+1)*(size*2+1)) do
 		local diff = center - p
 		local dist = math.abs(diff.x) + math.abs(diff.y)
-		--if Board:IsValid(p) and dist <= size and mark:canMark(p) then
 		if Board:IsValid(p) and dist <= size then
 			ret:AddBounce(p, -2)
 			if mark:canMark(p) then
@@ -278,7 +277,7 @@ truelch_SurveillanceRadar_A = truelch_SurveillanceRadar:new{
 	Range = 2,
 	--Effect
 	SweepAnim = "truelch_sweep_2",
-	SweepAnim = "truelch_sweep_old_2",
+	SweepAnimOld = "truelch_sweep_old_2",
 	--TipImage
 	TipStrafeStarts = { Point(2, 2), Point(1, 2) },
 	TipImage = {

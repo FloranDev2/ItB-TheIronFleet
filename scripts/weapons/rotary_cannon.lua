@@ -247,8 +247,9 @@ function truelch_RotaryCannon:StrafeAttack(ret, start, dest, path)
     		damage.sAnimation = self.StrafeAnimation
     		damage.sSound = self.StrafeSound
 
-			--Show mark (only tip image)
-			if Board:IsTipImage() then
+			--Show mark (only tip image) --wut why did I limit this to tip image?
+			--if Board:IsTipImage() then
+			if Board:IsPawnSpace(pathPoint) then
 				damage.sImageMark = "combat/icons/truelch_mark_weapon_mark.png"
 			end
 
@@ -287,6 +288,7 @@ function truelch_RotaryCannon:ZoneAttack(ret, center)
 		--if we need to check isPawnMarked, no need to check if the pawn is an enemy
 		if dist <= size and pawn ~= nil and p ~= center and pawn:IsEnemy() and mark:isPawnMarked(pawn) then
 			local spaceDamage = SpaceDamage(p, self.DamageMissile)
+			spaceDamage.bHidePath = true
 			ret:AddArtillery(spaceDamage, self.MissileUpShot, 0.1) --,NO_DELAY
 		end
 		p = p + VEC_RIGHT
