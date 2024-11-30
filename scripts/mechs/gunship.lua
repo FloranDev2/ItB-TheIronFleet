@@ -40,7 +40,7 @@ GunshipMech = Pawn:new{
 	Image = "gunship",
 	ImageOffset = dieselPunk,
 	
-	SkillList = { "truelch_RotaryCannon", },
+	SkillList = { "truelch_RotaryCannon", --[["testAction"]] },
 
 	SoundLocation = "/support/support_drone/",
 	ImpactMaterial = IMPACT_METAL,

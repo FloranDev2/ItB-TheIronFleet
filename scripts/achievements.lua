@@ -182,8 +182,8 @@ end
 --Kill VALKYRIES_GOAL (5) enemies in a single attack
 --No tooltip for this one, the action is instant
 function completeRideOfTheValkyries()
-	LOG("completeRideOfTheValkyries()")
-	Board:AddAlert(Point(4, 4), "Ride of the Valkyries completed!")
+	--LOG("completeRideOfTheValkyries()")
+	--Board:AddAlert(Point(4, 4), "Ride of the Valkyries completed!")
 	if not achievements.rideOfTheValkyries:isComplete() then
 		achievements.rideOfTheValkyries:addProgress{ complete = true } --test for now
 	end
@@ -404,11 +404,10 @@ local HOOK_onPawnKilled = function(mission, pawn)
 
 	local achievementData = achievementData()
 	
-	if pawn:IsEnemy() then --lmao don't kill your own units / allies / neutral to get this achievement!
+	if pawn:IsEnemy() then
 		--Increment kill count
-		--LOG("(before) kill count: " .. achievementData.killCount)
 		achievementData.killCount = achievementData.killCount + 1
-		LOG("(after) kill count: " .. achievementData.killCount)
+		--LOG("(after) kill count: " .. achievementData.killCount)
 
 		--Check kill count
 		if achievementData.killCount >= VALKYRIES_GOAL then

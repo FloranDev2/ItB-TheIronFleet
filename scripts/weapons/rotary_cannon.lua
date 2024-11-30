@@ -8,14 +8,6 @@ local resourcePath = mod.resourcePath
 local mark = require(scriptPath.."/mark/mark")
 --LOG("mark: " .. tostring(mark))
 
---new previewer (not needed)
---local previewer = require(scriptPath.."/libs/weaponPreview")
---LOG("TRUELCH - previewer: " .. tostring(previewer))
-
---old previewer
---local previewer = require(scriptPath .."weaponPreview/api")
-
-
 --------------------------------------------------- GENERIC UTILITY ---------------------------------------------------
 
 local function isGame()
@@ -69,6 +61,7 @@ local function isRotaryCannon(weapon)
     return string.sub(weapon, 1, 20) == "truelch_RotaryCannon"
 end
 
+--[[
 local function isPointAlreadyInTheList(p)
     for _, pathPoint in pairs(strafePath) do
         if pathPoint == p then
@@ -77,14 +70,20 @@ local function isPointAlreadyInTheList(p)
     end
     return false
 end
+]]
 
 --I don't know if I can clone the list without using the same reference in lua, so I'll do that manually...
 local function trimPath(p)
 	--Step1: create a clone list
+	--Lemon's suggestion: (shallow copy)
+	local clonedStrafePath = shallow_copy(strafePath)
+
+	--[[
 	local clonedStrafePath = {}
     for _, pathPoint in pairs(strafePath) do
     	table.insert(clonedStrafePath, pathPoint)
     end
+    ]]
 
 	--Step2: clean path
 	strafePath = {}
@@ -109,7 +108,8 @@ local function computeAddPoint(origin, p, maxLength)
         strafePath = {}
     end
 
-    if isPointAlreadyInTheList(p) then
+    --if isPointAlreadyInTheList(p) then
+	if list_contains(strafePath, p) then --Lemon's suggestion!
         --TRIM
         trimPath(p)
     elseif isAdjacentTile(origin, p) and #strafePath < maxLength then
@@ -149,8 +149,8 @@ truelch_RotaryCannon = Skill:new{
 	TipMarkedPoints = { Point(1, 3) }, --for the custom tip image, missile effect
 	TipStrafePath = { Point(2, 2), Point(3, 2), Point(3, 1) },
 	TipImage = {
-		Unit = Point(2, 3),
-		Enemy = Point(2, 2),
+		Unit   = Point(2, 3),
+		Enemy  = Point(2, 2),
 		Enemy2 = Point(3, 2),
 		Enemy3 = Point(1, 3),
 		Target = Point(3, 3),
@@ -178,7 +178,8 @@ function truelch_RotaryCannon:GetTargetArea(point)
         local lastPathPoint = getLastPathPoint(point)
         for dir = DIR_START, DIR_END do
             local nextPoint = lastPathPoint + DIR_VECTORS[dir]
-            if not isPointAlreadyInTheList(nextPoint) and nextPoint ~= point then
+            --if not isPointAlreadyInTheList(nextPoint) and nextPoint ~= point then
+        	if not list_contains(strafePath, nextPoint) and nextPoint ~= point then --Lemon's suggestion
                 ret:push_back(nextPoint)
             end
         end
@@ -311,7 +312,7 @@ end
 -- Normal / Tip Image Effects
 
 function truelch_RotaryCannon:NormalEffect(ret, p1, p2)
-
+	LOG("truelch_RotaryCannon:NormalEffect")
 	--Check if we click on start: don't do anything (it won't waste the turn)
 	--TODO: also check if there's actually no enemies in range for the missiles' attack	
 	if p2 == p1 then
@@ -346,18 +347,26 @@ end
 
 
 function truelch_RotaryCannon:TipImageEffect(ret, p1, p2)
-	--LOG("TipImageEffect(p1: " .. p1:GetString() .. ", p2: " .. p2:GetString() .. ")")
+	--LOG("truelch_RotaryCannon:TipImageEffect(p1: " .. p1:GetString() .. ", p2: " .. p2:GetString() .. ")")
 	TipFakeZoneAttack(ret, self.TipMarkedPoints, self.DamageMissile, self.MissileUpShot)
 	ret:AddDelay(0.3)
 	self:StrafeAttack(ret, p1, p2, self.TipStrafePath)
 end
 
 
--- Get Skill Effect
-
 function truelch_RotaryCannon:GetSkillEffect(p1, p2)
-	--LOG("GetSkillEffect")
+	--LOG("truelch_RotaryCannon:GetSkillEffect")
 	local ret = SkillEffect()
+
+	--To display the AoE
+	--Wait maybe it'll be an issue with the attempted fix
+	--Maybe only add this when we aren't targeting obstacles? That sounds dumb though...
+	--Doesn't work because of the leap arrow anyway...
+	--[[
+	local aoePreviewDamage = SpaceDamage(p1)
+	aoePreviewDamage.sImageMark = "combat/icons/truelch_gunship_rocket_aoe.png"
+	ret:AddDamage(aoePreviewDamage)
+	]]
 
 	if Board:IsTipImage() then
 		self:TipImageEffect(ret, p1, p2)

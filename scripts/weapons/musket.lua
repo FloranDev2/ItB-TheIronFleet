@@ -10,20 +10,7 @@ local resourcePath = mod.resourcePath
 local mark = require(scriptPath.."/mark/mark")
 --LOG("mark: " .. tostring(mark))
 
---new previewer (not needed?)
---local previewer = require(scriptPath.."/libs/weaponPreview")
---old previewer
---local previewer = require(scriptPath .."weaponPreview/api")
---LOG("previewer: " .. tostring(previewer))
-
 --------------------------------------------------- UTILITY / LOCAL FUNCTIONS ---------------------------------------------------
-
---[[
-local function IsTipImage()
-	return Board:GetSize() == Point(6,6)
-end
-]]
-
 local function isGame()
 	return true
 		and Game ~= nil
@@ -68,8 +55,8 @@ truelch_Musket = TankDefault:new{
 	--TipImage
 	TipMarkedPoints = { --[[Point(2, 1)]] }, --For the second shot?
 	TipImage = {
-		Unit = Point(2, 3),
-		Enemy = Point(2, 1),
+		Unit   = Point(2, 3),
+		Enemy  = Point(2, 1),
 		Target = Point(2, 1),
 	}
 }

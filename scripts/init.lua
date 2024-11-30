@@ -13,51 +13,57 @@ local mod = {
 
 function mod:init()
 	--Palette
-	require(self.scriptPath .. "palette")
+	require(self.scriptPath.."palette")
 
 	--Mark mechanic
-	require(self.scriptPath .. "mark/mark")
+	require(self.scriptPath.."mark/mark")
 
 	--Achievements
-	require(self.scriptPath .. "achievements")
+	require(self.scriptPath.."achievements")
 
 	--Mechs
-	require(self.scriptPath .. "mechs/gunship")
-	require(self.scriptPath .. "mechs/airship")
-	require(self.scriptPath .. "mechs/designator")	
+	require(self.scriptPath.."mechs/gunship")
+	require(self.scriptPath.."mechs/airship")
+	require(self.scriptPath.."mechs/designator")	
 
 	--Need to move all images importations to a separate file to keep things clean
 	--Weapons' images
-	modApi:appendAsset("img/weapons/fighter_strafe.png",      self.resourcePath .. "img/weapons/fighter_strafe.png")
-	modApi:appendAsset("img/weapons/musket.png",              self.resourcePath .. "img/weapons/musket.png")
-	modApi:appendAsset("img/weapons/rotary_cannon.png",       self.resourcePath .. "img/weapons/rotary_cannon.png")
-	modApi:appendAsset("img/weapons/surveillance_radar.png",  self.resourcePath .. "img/weapons/surveillance_radar.png")
+	modApi:appendAsset("img/weapons/fighter_strafe.png",     self.resourcePath.."img/weapons/fighter_strafe.png")
+	modApi:appendAsset("img/weapons/musket.png",             self.resourcePath.."img/weapons/musket.png")
+	modApi:appendAsset("img/weapons/rotary_cannon.png",      self.resourcePath.."img/weapons/rotary_cannon.png")
+	modApi:appendAsset("img/weapons/surveillance_radar.png", self.resourcePath.."img/weapons/surveillance_radar.png")
 
 	--Effects
-	modApi:appendAsset("img/effects/tif_shot_metal_slug_R.png",  self.resourcePath .. "img/effects/tif_shot_metal_slug_R.png")
-	modApi:appendAsset("img/effects/tif_shot_metal_slug_U.png",  self.resourcePath .. "img/effects/tif_shot_metal_slug_U.png")
-	modApi:appendAsset("img/effects/tif_shotup_missile.png",     self.resourcePath .. "img/effects/tif_shotup_missile.png")
-	modApi:appendAsset("img/effects/tif_biplane.png",            self.resourcePath .. "img/effects/tif_biplane.png")
+	modApi:appendAsset("img/effects/tif_shot_metal_slug_R.png", self.resourcePath.."img/effects/tif_shot_metal_slug_R.png")
+	modApi:appendAsset("img/effects/tif_shot_metal_slug_U.png", self.resourcePath.."img/effects/tif_shot_metal_slug_U.png")
+	modApi:appendAsset("img/effects/tif_shotup_missile.png",    self.resourcePath.."img/effects/tif_shotup_missile.png")
+	modApi:appendAsset("img/effects/tif_biplane.png",           self.resourcePath.."img/effects/tif_biplane.png")
 
 	--Sweep effect
-	modApi:appendAsset("img/combat/icons/truelch_radar_sweep_1.png",self.resourcePath.."img/combat/icons/truelch_radar_sweep_1.png")
+	modApi:appendAsset("img/combat/icons/truelch_radar_sweep_1.png", self.resourcePath.."img/combat/icons/truelch_radar_sweep_1.png")
 		Location["combat/icons/truelch_radar_sweep_1.png"] = Point(-85, -41)
-	modApi:appendAsset("img/combat/icons/truelch_radar_sweep_2.png",self.resourcePath.."img/combat/icons/truelch_radar_sweep_2.png")
+	modApi:appendAsset("img/combat/icons/truelch_radar_sweep_2.png", self.resourcePath.."img/combat/icons/truelch_radar_sweep_2.png")
 		Location["combat/icons/truelch_radar_sweep_2.png"] = Point(-85, -41)
 
-	modApi:appendAsset("img/combat/icons/OLD_truelch_radar_sweep_1.png",self.resourcePath.."img/combat/icons/OLD_truelch_radar_sweep_1.png")
+	modApi:appendAsset("img/combat/icons/OLD_truelch_radar_sweep_1.png", self.resourcePath.."img/combat/icons/OLD_truelch_radar_sweep_1.png")
 		Location["combat/icons/OLD_truelch_radar_sweep_1.png"] = Point(-85, -41)
-	modApi:appendAsset("img/combat/icons/OLD_truelch_radar_sweep_2.png",self.resourcePath.."img/combat/icons/OLD_truelch_radar_sweep_2.png")
+	modApi:appendAsset("img/combat/icons/OLD_truelch_radar_sweep_2.png", self.resourcePath.."img/combat/icons/OLD_truelch_radar_sweep_2.png")
 		Location["combat/icons/OLD_truelch_radar_sweep_2.png"] = Point(-85, -41)
 
+	--[[
+	modApi:appendAsset("img/combat/icons/truelch_gunship_rocket_aoe.png", self.resourcePath.."img/combat/icons/truelch_gunship_rocket_aoe.png")
+		Location["combat/icons/truelch_gunship_rocket_aoe.png"] = Point(-85, -41)
+	]]
+
 	--Regular weapons
-	require(self.scriptPath .. "/weapons/fighter_strafe")
-	require(self.scriptPath .. "/weapons/rotary_cannon")
-	require(self.scriptPath .. "/weapons/musket")
-	require(self.scriptPath .. "/weapons/surveillance_radar")
+	require(self.scriptPath.."/weapons/fighter_strafe")
+	require(self.scriptPath.."/weapons/rotary_cannon")
+	require(self.scriptPath.."/weapons/musket")
+	require(self.scriptPath.."/weapons/surveillance_radar")
+	--require(self.scriptPath.."/weapons/testAction") --TMP!!!
 
 	--Animations
-	require(self.scriptPath .. "animations")
+	require(self.scriptPath.."animations")
 
 	--Weapon deck
 	modApi:addWeaponDrop("truelch_FighterStrafe")
@@ -100,7 +106,7 @@ function mod:load(options, version)
 		},
 		"Iron Fleet",
 		"A mix of technology from varying ages creating a great air-supremacy force.",
-		self.resourcePath .. "img/squad_icon.png"
+		self.resourcePath.."img/squad_icon.png"
 	)
 end
 

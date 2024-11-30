@@ -436,7 +436,7 @@ end
 ---------------------------------------- Hooks ----------------------------------------
 
 local function computeMarkBonusDamage(pawn, skillEffect)
-	if skillEffect.effect == nil then
+	if skillEffect == nil or skillEffect.effect == nil then
 		return
 	end
 
